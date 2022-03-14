@@ -10,14 +10,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Affichage des clients de la Ceriseraie "
+        android:text="Clients Ceriseraie "
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.46"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btRetour"
@@ -33,14 +31,12 @@
 
     <ListView
         android:id="@+id/lvClient"
-        android:layout_width="954dp"
-        android:layout_height="309dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/btRetour"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.926" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
         android:id="@+id/txMessage"
@@ -48,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:layout_editor_absoluteX="57dp"
-        tools:layout_editor_absoluteY="153dp" />
+        app:layout_constraintBottom_toBottomOf="@id/lvClient"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="57dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

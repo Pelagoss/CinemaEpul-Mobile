@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.christian.cerisaieapp">
+    package="com.example.cinepul.cinepulapp">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,17 +14,21 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ActivityModifSup"/>
-        <activity android:name=".presentation.ActivityConnexion" />
-        <activity android:name=".presentation.ActivityAfficheClient" />
-        <activity android:name=".presentation.ActivitySaisieClient" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.cinepul.cinepulapp.presentation.ActivityModifSup"/>
+        <activity android:name="com.example.cinepul.cinepulapp.presentation.ActivityConnexion" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.example.cinepul.cinepulapp.presentation.ActivityAfficheClient" />
+        <activity android:name="com.example.cinepul.cinepulapp.presentation.ActivitySaisieClient" />
+        <activity android:name="com.example.cinepul.cinepulapp.MainActivity"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
