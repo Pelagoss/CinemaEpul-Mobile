@@ -103,7 +103,7 @@ class _ListActeursState extends State<ListActeurs> with RouteAware {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(acteur!.nomAct.toUpperCase(),
+                                    Text(acteur.nomAct.toUpperCase(),
                                         textAlign: TextAlign.start,
                                         style: GoogleFonts.poppins(
                                             color: accentColor,
