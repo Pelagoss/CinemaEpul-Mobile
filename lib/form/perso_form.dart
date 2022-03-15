@@ -87,14 +87,14 @@ class _FormPersoState extends State<FormPerso> {
             var films = (state as DataLoaded)
                 .films
                 .where(
-                    (element) => element!.noFilm == widget.personnage!.noFilm)
+                    (element) => element!.noFilm == widget.personnage?.noFilm)
                 .take(1)
                 .toList();
             if (!films.isEmpty) film = films[0];
 
             var acteurs = (state as DataLoaded)
                 .acteurs
-                .where((element) => element!.noAct == widget.personnage!.noAct)
+                .where((element) => element!.noAct == widget.personnage?.noAct)
                 .take(1)
                 .toList();
             if (!acteurs.isEmpty) acteur = acteurs[0];
