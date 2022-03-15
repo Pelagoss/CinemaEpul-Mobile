@@ -232,7 +232,7 @@ class _FormRealState extends State<FormReal> {
               prefixIcon: Align(
                 widthFactor: 1.0,
                 heightFactor: 1.0,
-                child: Icon(Icons.watch_later, color: textColor),
+                child: Icon(Icons.text_fields, color: textColor),
               ),
               hintText: "Prénom",
               hintStyle: TextStyle(
@@ -254,7 +254,7 @@ class _FormRealState extends State<FormReal> {
             autovalidateMode: AutovalidateMode.disabled,
             validator: (value) {
               if (!(value == null) && value.isEmpty) {
-                return "La durée est requise";
+                return "Le prénom est requis";
               }
             },
           ),

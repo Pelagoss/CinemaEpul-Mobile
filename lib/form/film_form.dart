@@ -48,6 +48,7 @@ class _FormFilmState extends State<FormFilm> {
         montantRecette: montantRecette,
         noRea: noRea,
         codeCat: codeCat);
+
     context.read<DataCubit>().createFilm(film);
   }
 
@@ -87,6 +88,7 @@ class _FormFilmState extends State<FormFilm> {
       actionPage = "Créer";
       textFinished = "Création";
       action = create;
+      codeCat = "";
     }
   }
 
@@ -104,17 +106,21 @@ class _FormFilmState extends State<FormFilm> {
               );
             }
           }, builder: (context, state) {
-            cat = (state as DataLoaded)
+            var cats = (state as DataLoaded)
                 .cats
-                .where((element) => element!.codeCat == widget.film!.codeCat)
+                .where((element) => element!.codeCat == codeCat)
                 .take(1)
-                .toList()[0];
+                .toList();
+            if (!cats.isEmpty) cat = cats[0];
 
-            real = (state as DataLoaded)
+            var reals = (state as DataLoaded)
                 .reals
-                .where((element) => element!.noRea == widget.film!.noRea)
+                .where((element) => element!.noRea == noRea)
                 .take(1)
-                .toList()[0];
+                .toList();
+
+            if (!reals.isEmpty) real = reals[0];
+
             return Scaffold(
               backgroundColor: backColor,
               body: SingleChildScrollView(
