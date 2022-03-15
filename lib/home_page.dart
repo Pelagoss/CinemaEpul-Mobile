@@ -4,9 +4,13 @@ import 'package:cinemaepulmobile/brand_logo.dart';
 import 'package:cinemaepulmobile/constant.dart';
 import 'package:cinemaepulmobile/cubit/data_cubit.dart';
 import 'package:cinemaepulmobile/cubit/users_cubit.dart';
+import 'package:cinemaepulmobile/form/acteur_form.dart';
 import 'package:cinemaepulmobile/form/film_form.dart';
+import 'package:cinemaepulmobile/form/perso_form.dart';
 import 'package:cinemaepulmobile/form/real_form.dart';
+import 'package:cinemaepulmobile/list_acteur_component.dart';
 import 'package:cinemaepulmobile/list_film_component.dart';
+import 'package:cinemaepulmobile/list_perso_component.dart';
 import 'package:cinemaepulmobile/list_real_component.dart';
 import 'package:cinemaepulmobile/loading_component.dart';
 import 'package:cinemaepulmobile/login_page.dart';
@@ -29,7 +33,12 @@ class _HomePageState extends State<HomePage> {
 
   int index = 0;
 
-  List<String> titles = ["Nos Films", "Les Réal's"];
+  List<String> titles = [
+    "Nos Films",
+    "Les acteurs",
+    "Les Réal's",
+    "Les personnages"
+  ];
   List<Widget> forms = [
     BlocProvider(
       create: (context) => DataCubit(DataRepository()),
@@ -37,12 +46,22 @@ class _HomePageState extends State<HomePage> {
     ),
     BlocProvider(
       create: (context) => DataCubit(DataRepository()),
+      child: const FormActeur(),
+    ),
+    BlocProvider(
+      create: (context) => DataCubit(DataRepository()),
       child: const FormReal(),
+    ),
+    BlocProvider(
+      create: (context) => DataCubit(DataRepository()),
+      child: const FormPerso(),
     ),
   ];
   List<Widget> widgets = [
     const ListFilms(),
+    const ListActeurs(),
     const ListReals(),
+    const ListPersos(),
   ];
 
   @override
@@ -138,6 +157,58 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  index = 2;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => accentColor),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  )),
+                              child: Text(
+                                titles[2],
+                                style: GoogleFonts.poppins(
+                                  color: textColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  index = 3;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => accentColor),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                  )),
+                              child: Text(
+                                titles[3],
+                                style: GoogleFonts.poppins(
+                                  color: textColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
                           ]),
                     )
                   ], // Populate the Drawer in the next step.
@@ -185,12 +256,15 @@ class _HomePageState extends State<HomePage> {
                                         color: textColor,
                                       ));
                                 }),
-                                Text(
-                                  titles[index],
-                                  style: GoogleFonts.poppins(
-                                      color: textColor,
-                                      fontSize: 30,
-                                      height: 1),
+                                Flexible(
+                                  child: Text(
+                                    titles[index],
+                                    textAlign: TextAlign.justify,
+                                    style: GoogleFonts.poppins(
+                                        color: textColor,
+                                        fontSize: 25,
+                                        height: 1),
+                                  ),
                                 ),
                                 TextButton(
                                     onPressed: () async {

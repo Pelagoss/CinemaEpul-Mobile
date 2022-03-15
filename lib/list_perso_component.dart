@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:cinemaepulmobile/constant.dart';
 import 'package:cinemaepulmobile/cubit/data_cubit.dart';
 import 'package:cinemaepulmobile/form/film_form.dart';
+import 'package:cinemaepulmobile/form/perso_form.dart';
 import 'package:cinemaepulmobile/loading_component.dart';
+import 'package:cinemaepulmobile/model/acteur.dart';
 import 'package:cinemaepulmobile/model/categorie.dart';
 import 'package:cinemaepulmobile/model/film.dart';
+import 'package:cinemaepulmobile/model/personnage.dart';
 import 'package:cinemaepulmobile/model/realisateur.dart';
 import 'package:cinemaepulmobile/repository/data_repository.dart';
 import 'package:flutter/gestures.dart';
@@ -14,20 +17,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ListFilms extends StatefulWidget {
-  const ListFilms({Key? key}) : super(key: key);
+class ListPersos extends StatefulWidget {
+  const ListPersos({Key? key}) : super(key: key);
 
   @override
-  State<ListFilms> createState() => _ListFilmsState();
+  State<ListPersos> createState() => _ListPersosState();
 }
 
-class _ListFilmsState extends State<ListFilms> with RouteAware {
+class _ListPersosState extends State<ListPersos> with RouteAware {
   Future<void> _pullRefresh() async {
     context.read<DataCubit>().getFilms();
   }
 
-  void _deleteFilm(Film? film) async {
-    context.read<DataCubit>().deleteFilm(film);
+  void _deletePerso(Personnage? personnage) async {
+    context.read<DataCubit>().deletePersonnage(personnage);
     sleep(const Duration(milliseconds: 1000));
     _pullRefresh();
   }
@@ -42,17 +45,19 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
     List<Film?> films = state.films;
     List<Realisateur?> reals = state.reals;
     List<Categorie?> cats = state.cats;
+    List<Personnage?> persos = state.persos;
+    List<Acteur?> acteurs = state.acteurs;
 
     List<Widget> list = [];
-    if (films != null) {
-      films.forEach((Film? film) {
-        var cat = cats
-            .where((element) => element?.codeCat == film?.codeCat)
+    if (persos != null) {
+      persos.forEach((Personnage? perso) {
+        var film = films
+            .where((element) => element?.noFilm == perso?.noFilm)
             .take(1)
             .toList()[0];
 
-        var real = reals
-            .where((element) => element?.noRea == film?.noRea)
+        var act = acteurs
+            .where((element) => element?.noAct == perso?.noAct)
             .take(1)
             .toList()[0];
         var row = Padding(
@@ -76,7 +81,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                             return BlocProvider(
                                 create: (context) =>
                                     DataCubit(DataRepository()),
-                                child: FormFilm(film: film));
+                                child: FormPerso(personnage: perso));
                           }));
                         },
                         backgroundColor: accentColor,
@@ -85,7 +90,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                         label: 'Modifier'),
                     SlidableAction(
                       // An action can be bigger than the others.
-                      onPressed: (context) => _deleteFilm(film),
+                      onPressed: (context) => _deletePerso(perso),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
@@ -103,29 +108,26 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(film!.titre,
+                              Text(perso!.nomPers,
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.poppins(
                                       color: accentColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold)),
                               Text(
-                                  "${real!.prenRea} ${real.nomRea.toUpperCase()}",
+                                  "${act!.nomAct.toUpperCase()} ${act.prenAct}",
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.poppins(
                                       color: backColor,
                                       fontSize: 10,
-                                      fontWeight: FontWeight.bold)),
-                              Text(cat!.libelleCat,
+                                      fontWeight: FontWeight.w500)),
+                              Text(film!.titre,
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.poppins(
                                       color: backColor,
                                       fontSize: 10,
-                                      fontWeight: FontWeight.w500))
+                                      fontWeight: FontWeight.bold))
                             ]),
-                        Text("${film.duree} min",
-                            style: GoogleFonts.poppins(
-                                color: backColor, fontSize: 15)),
                       ]),
                 ),
               ),
@@ -200,7 +202,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
           children: [
             Center(
               child: Text(
-                "Aucun film enregistré.",
+                "Aucun personnage enregistré.",
                 style: GoogleFonts.poppins(color: textColor, fontSize: 20),
               ),
             )

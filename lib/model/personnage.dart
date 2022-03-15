@@ -9,11 +9,11 @@ class Personnage {
     return Personnage(noFilm: noFilm, noAct: noAct, nomPers: nomPers);
   }
 
-  factory Personnage.fromJson(Map<String, dynamic> json) {
+  factory Personnage.fromJson(List<dynamic> json) {
     return Personnage(
-      noFilm: json["noFilm"],
-      noAct: json["noAct"],
-      nomPers: json["nomPers"],
+      noFilm: json[1],
+      noAct: json[0],
+      nomPers: json[2],
     );
   }
 }

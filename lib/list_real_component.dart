@@ -66,9 +66,9 @@ class _ListRealsState extends State<ListReals> with RouteAware {
                               child: FormReal(realisateur: real));
                         }));
                       },
-                      backgroundColor: Color(0xFF0392CF),
+                      backgroundColor: accentColor,
                       foregroundColor: Colors.white,
-                      icon: Icons.save,
+                      icon: Icons.edit,
                       label: 'Modifier',
                     ),
                     SlidableAction(
@@ -91,7 +91,7 @@ class _ListRealsState extends State<ListReals> with RouteAware {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text(real!.nomRea,
+                            Text(real!.nomRea.toUpperCase(),
                                 textAlign: TextAlign.start,
                                 style: GoogleFonts.poppins(
                                     color: accentColor,

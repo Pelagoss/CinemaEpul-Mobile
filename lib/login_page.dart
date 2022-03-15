@@ -76,9 +76,9 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40.0),
-                      child: brand_logo(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [brand_logo()],
                     ),
                     const SizedBox(
                       height: 90,

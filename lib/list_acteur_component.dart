@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:cinemaepulmobile/constant.dart';
 import 'package:cinemaepulmobile/cubit/data_cubit.dart';
+import 'package:cinemaepulmobile/form/acteur_form.dart';
 import 'package:cinemaepulmobile/form/film_form.dart';
 import 'package:cinemaepulmobile/loading_component.dart';
+import 'package:cinemaepulmobile/model/acteur.dart';
 import 'package:cinemaepulmobile/model/categorie.dart';
 import 'package:cinemaepulmobile/model/film.dart';
 import 'package:cinemaepulmobile/model/realisateur.dart';
@@ -13,21 +15,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
-class ListFilms extends StatefulWidget {
-  const ListFilms({Key? key}) : super(key: key);
+class ListActeurs extends StatefulWidget {
+  const ListActeurs({Key? key}) : super(key: key);
 
   @override
-  State<ListFilms> createState() => _ListFilmsState();
+  State<ListActeurs> createState() => _ListActeursState();
 }
 
-class _ListFilmsState extends State<ListFilms> with RouteAware {
+class _ListActeursState extends State<ListActeurs> with RouteAware {
   Future<void> _pullRefresh() async {
     context.read<DataCubit>().getFilms();
   }
 
-  void _deleteFilm(Film? film) async {
-    context.read<DataCubit>().deleteFilm(film);
+  void _deleteActeur(Acteur? acteur) async {
+    context.read<DataCubit>().deleteActeur(acteur);
     sleep(const Duration(milliseconds: 1000));
     _pullRefresh();
   }
@@ -38,23 +41,16 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
     context.read<DataCubit>().getFilms();
   }
 
-  List<Widget> getFilmTiles(state) {
-    List<Film?> films = state.films;
-    List<Realisateur?> reals = state.reals;
-    List<Categorie?> cats = state.cats;
-
+  List<Widget> getActeurTiles(state) {
+    List<Acteur?> acteurs = state.acteurs;
     List<Widget> list = [];
-    if (films != null) {
-      films.forEach((Film? film) {
-        var cat = cats
-            .where((element) => element?.codeCat == film?.codeCat)
-            .take(1)
-            .toList()[0];
+    if (acteurs != null) {
+      acteurs.forEach((Acteur? acteur) {
+        int ageCalc = calculateAge(acteur!.dateNaiss);
+        String age = "$ageCalc ans";
 
-        var real = reals
-            .where((element) => element?.noRea == film?.noRea)
-            .take(1)
-            .toList()[0];
+        if (acteur.dateDeces != null) age = "";
+
         var row = Padding(
           padding:
               const EdgeInsets.only(left: 15.0, right: 15.0, top: 7, bottom: 7),
@@ -76,7 +72,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                             return BlocProvider(
                                 create: (context) =>
                                     DataCubit(DataRepository()),
-                                child: FormFilm(film: film));
+                                child: FormActeur(acteur: acteur));
                           }));
                         },
                         backgroundColor: accentColor,
@@ -85,7 +81,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                         label: 'Modifier'),
                     SlidableAction(
                       // An action can be bigger than the others.
-                      onPressed: (context) => _deleteFilm(film),
+                      onPressed: (context) => _deleteActeur(acteur),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                       icon: Icons.delete,
@@ -103,27 +99,35 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(film!.titre,
-                                  textAlign: TextAlign.start,
-                                  style: GoogleFonts.poppins(
-                                      color: accentColor,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(acteur!.nomAct.toUpperCase(),
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.poppins(
+                                            color: accentColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold)),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(acteur.prenAct,
+                                        textAlign: TextAlign.start,
+                                        style: GoogleFonts.poppins(
+                                            color: backColor,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600)),
+                                  ]),
                               Text(
-                                  "${real!.prenRea} ${real.nomRea.toUpperCase()}",
+                                  "${DateFormat('dd/MM/yyyy').format(acteur.dateNaiss)} ${acteur.dateDeces != null ? '-' : ''} ${acteur.dateDeces != null ? DateFormat('dd/MM/yyyy').format(acteur.dateDeces!) : ''}",
                                   textAlign: TextAlign.start,
                                   style: GoogleFonts.poppins(
                                       color: backColor,
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold)),
-                              Text(cat!.libelleCat,
-                                  textAlign: TextAlign.start,
-                                  style: GoogleFonts.poppins(
-                                      color: backColor,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500))
                             ]),
-                        Text("${film.duree} min",
+                        Text(age,
                             style: GoogleFonts.poppins(
                                 color: backColor, fontSize: 15)),
                       ]),
@@ -137,6 +141,23 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
     }
 
     return list;
+  }
+
+  int calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age;
   }
 
   @override
@@ -173,7 +194,7 @@ class _ListFilmsState extends State<ListFilms> with RouteAware {
                           crossAxisSpacing: 2,
                           mainAxisSpacing: 2,
                           crossAxisCount: 1,
-                          children: getFilmTiles(state),
+                          children: getActeurTiles(state),
                         ),
                       ],
                     )),
