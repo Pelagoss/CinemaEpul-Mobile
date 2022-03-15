@@ -43,7 +43,7 @@ class _FormActeurState extends State<FormActeur> {
         nomAct: nomAct,
         prenAct: prenAct,
         dateNaiss: dateNaiss!,
-        dateDeces: dateDeces!);
+        dateDeces: dateDeces);
     context.read<DataCubit>().createActeur(acteur);
   }
 
@@ -53,7 +53,7 @@ class _FormActeurState extends State<FormActeur> {
         nomAct: nomAct,
         prenAct: prenAct,
         dateNaiss: dateNaiss!,
-        dateDeces: dateDeces!);
+        dateDeces: dateDeces);
     context.read<DataCubit>().createActeur(acteur);
   }
 
@@ -73,7 +73,7 @@ class _FormActeurState extends State<FormActeur> {
       textFinished = "Modification";
       action = update;
     } else {
-      pageTitre = "Ajouter un personnage";
+      pageTitre = "Ajouter un acteur";
       actionPage = "Créer";
       textFinished = "Création";
       action = create;
@@ -276,6 +276,87 @@ class _FormActeurState extends State<FormActeur> {
           const SizedBox(
             height: 10,
           ),
+          TextFormField(
+            initialValue: dateNaiss == null
+                ? ''
+                : DateFormat('yyyy-MM-dd').format(dateNaiss!),
+            keyboardType: TextInputType.datetime,
+            onChanged: (value) => dateNaiss = DateTime.parse(value),
+            decoration: InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 1),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 2),
+              ),
+              prefixIcon: Align(
+                widthFactor: 1.0,
+                heightFactor: 1.0,
+                child: Icon(Icons.calendar_today, color: textColor),
+              ),
+              hintText: "Date de naissance",
+              hintStyle: TextStyle(
+                color: textColor,
+                fontSize: 15,
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w300,
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 1),
+              ),
+            ),
+            style: TextStyle(
+              color: textColor,
+              fontSize: 18,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w500,
+            ),
+            autovalidateMode: AutovalidateMode.disabled,
+            validator: (value) {
+              if (!(value == null) && value.isEmpty) {
+                return "La date de naissance est requise";
+              }
+            },
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            initialValue: dateDeces == null
+                ? ''
+                : DateFormat('yyyy-MM-dd').format(dateDeces!),
+            keyboardType: TextInputType.datetime,
+            onChanged: (value) => dateDeces = DateTime.parse(value),
+            decoration: InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 1),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 2),
+              ),
+              prefixIcon: Align(
+                widthFactor: 1.0,
+                heightFactor: 1.0,
+                child: Icon(Icons.calendar_today, color: textColor),
+              ),
+              hintText: "Date de décès",
+              hintStyle: TextStyle(
+                color: textColor,
+                fontSize: 15,
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w300,
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(color: textColor, width: 1),
+              ),
+            ),
+            style: TextStyle(
+              color: textColor,
+              fontSize: 18,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           const SizedBox(
             height: 20,
           ),
@@ -391,7 +472,11 @@ class _FormActeurState extends State<FormActeur> {
                       ),
                       Padding(
                           padding: EdgeInsets.all(15.0),
-                          child: Text("$textFinished terminée !")),
+                          child: Center(
+                            child: Text("$textFinished terminée !",
+                                style: GoogleFonts.poppins(
+                                    color: textColor, fontSize: 20)),
+                          )),
                     ],
                   ),
                 ),

@@ -654,7 +654,11 @@ class _FormFilmState extends State<FormFilm> {
                       ),
                       Padding(
                           padding: EdgeInsets.all(15.0),
-                          child: Text("$textFinished terminée !")),
+                          child: Center(
+                            child: Text("$textFinished terminée !",
+                                style: GoogleFonts.poppins(
+                                    color: textColor, fontSize: 20)),
+                          )),
                     ],
                   ),
                 ),

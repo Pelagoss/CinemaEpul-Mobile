@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Acteur {
   final int noAct;
   final String nomAct;
@@ -40,5 +42,16 @@ class Acteur {
         prenAct: json["prenAct"],
         dateNaiss: DateTime.parse(json["dateNaiss"]),
         dateDeces: DateTime.parse(json["dateDeces"]));
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'noAct': noAct,
+      'prenAct': prenAct,
+      'nomAct': nomAct,
+      'dateNaiss': DateFormat('yyyy-MM-dd').format(dateNaiss),
+      'dateDeces':
+          dateDeces != null ? DateFormat('yyyy-MM-dd').format(dateDeces!) : ""
+    };
   }
 }

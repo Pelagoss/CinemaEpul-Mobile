@@ -3,7 +3,8 @@ class Personnage {
   final int noAct;
   final String nomPers;
 
-  Personnage({this.noFilm = -1, required this.noAct, required this.nomPers});
+  Personnage(
+      {required this.noFilm, required this.noAct, required this.nomPers});
 
   factory Personnage.create(noFilm, noAct, nomPers) {
     return Personnage(noFilm: noFilm, noAct: noAct, nomPers: nomPers);
@@ -15,5 +16,9 @@ class Personnage {
       noAct: json[0],
       nomPers: json[2],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'noFilm': noFilm, 'noAct': noAct, 'nomPers': nomPers};
   }
 }
